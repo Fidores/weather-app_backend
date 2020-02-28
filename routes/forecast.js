@@ -48,17 +48,17 @@ router.get('/current/:id', async( async (req, res) => {
 
 router.get('/5-days/:id', async( async (req, res) => {
 
-    const response = await (await fetch(`${ weatherAPI }/forecast?id=${ req.params.id }&appid=${ apiKey }&lang=${ req.query.lang || lang }&units=${ req.query.units || units }`)).json();
+    const forecast = await (await fetch(`${ weatherAPI }/forecast?id=${ req.params.id }&appid=${ apiKey }&lang=${ req.query.lang || lang }&units=${ req.query.units || units }`)).json();
 
     let hourlyForecast = { 
         days: [],
         city: {
-            name: response.city.name,
-            id: response.city.id
+            name: forecast.city.name,
+            id: forecast.city.id
         }
     };
 
-    for (const weather of response.list) {
+    for (const weather of forecast.list) {
         
         hourlyForecast.days.push({
             main: {

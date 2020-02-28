@@ -1,7 +1,7 @@
 {
     "weatherAPI": {
         "origin": "https://api.openweathermap.org/data/2.5",
-        "key": "34a94a3bb70c9e9837f8cfd9b6452175",
+        "key": "",
         "langCode": "pl",
         "units": "metric"
     }
