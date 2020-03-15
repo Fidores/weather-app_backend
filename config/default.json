@@ -4,5 +4,9 @@
         "key": "",
         "langCode": "pl",
         "units": "metric"
+    },
+    "authorization": {
+        "header": "X-AUTH-TOKEN",
+        "key": ""
     }
 }

@@ -1,5 +1,8 @@
 {
     "weatherAPI": {
         "key": "weather-app_api-key"
+    },
+    "authorization": {
+        "key": "weather-app__auth-private-key"
     }
 }
