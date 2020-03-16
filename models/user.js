@@ -27,9 +27,9 @@ UserSchema.methods.generateAuthToken = function () {
 const User = new mongooose.model('user', UserSchema);
 
 const schema = Joi.object({
-    name: Joi.string().min(3).max(128).required(),
-    password: Joi.string().required().min(5).max(255),
-    email: Joi.string().email({tlds: false}).required().max(255),
+    name: Joi.string().min(3).max(128),
+    password: Joi.string().min(5).max(255),
+    email: Joi.string().email({tlds: false}).max(255),
     isAdmin: Joi.forbidden(),
     savedCities: Joi.forbidden()
 });

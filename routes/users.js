@@ -3,6 +3,7 @@ const async = require('../middleware/asyncMiddleware');
 const bcrypt = require('bcrypt');
 const auth = require('../middleware/auth');
 const savedCities = require('../routes/savedCities');
+const config = require('config');
 const { User, validationSchema } = require('../models/user');
 
 router.get('/me', auth, async(async (req, res) => {
@@ -20,7 +21,7 @@ router.get('/me', auth, async(async (req, res) => {
 
 router.post('/', async(async (req, res) => {
 
-    const { error } = validationSchema.validate(req.body);
+    const { error } = validationSchema.options({presence: 'required'}).validate(req.body);
     if(error) return res.status(400).send(error.message);
 
     let user = await User.findOne({email: req.body.email});
@@ -36,7 +37,7 @@ router.post('/', async(async (req, res) => {
 
     const token = user.generateAuthToken();
 
-    res.header('X-AUTH-TOKEN', token).send({
+    res.header(config.get('authorization.header'), token).send({
         _id: user._id,
         name: user.name,
         email: user.email
