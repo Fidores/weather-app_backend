@@ -2,13 +2,13 @@ const router = require('express').Router();
 const async = require('../middleware/asyncMiddleware');
 const bcrypt = require('bcrypt');
 const auth = require('../middleware/auth');
+const savedCities = require('../routes/savedCities');
 const { User, validationSchema } = require('../models/user');
-const { City } = require('../models/city');
 
 router.get('/me', auth, async(async (req, res) => {
 
     const user = await User.findById(req.user._id).select('-password');
-    if(!user) res.status(400).send('no user with given id'); 
+    if(!user) res.status(400).send('no user with given id');
 
     res.send({
         _id: user._id,
@@ -44,30 +44,8 @@ router.post('/', async(async (req, res) => {
 
 }));
 
-router.post('/cities', auth, async(async (req, res) => {
-    if(!req.body.cityId) return res.status(400).send('no id sent');
-    
-    const user = await User.findById(req.user._id);
-    if(user.savedCities.includes(req.body.cityId)) return res.status(400).send('city already saved');
-    if(user.savedCities.length === 20) return res.status(400).send('limit of 20 saved cities is reached');
 
-    const city = await City.findOne({id: req.body.cityId});
-    if(!city) return res.status(400).send('no city with given id');
+router.use('/me/saved-cities/', savedCities);
 
-    user.savedCities.push(req.body.cityId);
-    await user.save();
-    res.send(user.savedCities);
-
-}));
-
-router.delete('/cities/:id', auth, async(async (req, res) => {
-    const user = await User.findById(req.user._id);
-    if(!user.savedCities.includes(req.params.id)) return res.status(400).send('no saved city with given id');
-
-    user.savedCities.pull(req.params.id);
-    await user.save();
-
-    res.send(user.savedCities);
-}));
 
 module.exports = router;
