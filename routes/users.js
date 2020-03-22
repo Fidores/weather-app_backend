@@ -19,6 +19,29 @@ router.get('/me', auth, async(async (req, res) => {
 
 }));
 
+router.patch('/me', auth, async(async (req, res) => {
+
+    const { error } = validationSchema.validate(req.body);
+    if(error) return res.status(400).send(error.message);
+
+    let user = await User.findById(req.user._id);
+    if(!user) return res.status(400).send('no user found');
+
+    user.name = req.body.name;
+    user.email = req.body.email;
+
+    await user.save();
+
+    const token = user.generateAuthToken();
+
+    res.header(config.get('authorization.header'), token).send({
+        _id: user._id,
+        name: user.name,
+        email: user.email
+    });
+
+}));
+
 router.post('/', async(async (req, res) => {
 
     const { error } = validationSchema.options({presence: 'required'}).validate(req.body);
@@ -46,7 +69,8 @@ router.post('/', async(async (req, res) => {
 }));
 
 
-router.use('/me/saved-cities/', savedCities);
+
+router.use('/me/saved-cities/', auth, savedCities);
 
 
 module.exports = router;

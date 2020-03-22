@@ -4,11 +4,22 @@ const config = require('config');
 const Joi = require('@hapi/joi');
 
 const UserSchema = new mongooose.Schema({
-    name: String,
-    password: String,
+    name: {
+        type: String,
+        min: 3,
+        max: 128,
+        required: true
+    },
+    password: {
+        type: String,
+        min: 5,
+        max: 255,
+        required: true
+    },
     email: {
         type: String,
-        unique: true
+        unique: true,
+        required: true
     },
     isAdmin: {
         type: Boolean,
