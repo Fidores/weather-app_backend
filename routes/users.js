@@ -5,6 +5,7 @@ const auth = require('../middleware/auth');
 const savedCities = require('../routes/savedCities');
 const config = require('config');
 const { User, validationSchema } = require('../models/user');
+const settings = require('../routes/settings');
 
 router.get('/me', auth, async(async (req, res) => {
 
@@ -68,9 +69,7 @@ router.post('/', async(async (req, res) => {
 
 }));
 
-
-
 router.use('/me/saved-cities/', auth, savedCities);
-
+router.use('/me/settings/', auth, settings)
 
 module.exports = router;

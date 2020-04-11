@@ -2,6 +2,7 @@ const mongooose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const Joi = require('@hapi/joi');
+const { SettingsSchema, defaults: defaultSettings } = require('../models/settings');
 
 const UserSchema = new mongooose.Schema({
     name: {
@@ -25,7 +26,12 @@ const UserSchema = new mongooose.Schema({
         type: Boolean,
         default: false
     },
-    savedCities: [ String ]
+    savedCities: [ String ],
+    settings: {
+        type: SettingsSchema,
+        default: defaultSettings
+    }
+    
 });
 
 UserSchema.methods.generateAuthToken = function () {
