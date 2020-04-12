@@ -1,17 +1,15 @@
 const router = require('express').Router();
 const fetch = require('node-fetch');
-const groupBy = require('../helpers/groupBy');
 const config = require('config');
+const groupBy = require('../helpers/groupBy');
 const async = require('../middleware/asyncMiddleware');
 
 const apiKey = config.get('weatherAPI.key');
 const weatherAPI = config.get('weatherAPI.origin');
-const lang = config.get('weatherAPI.langCode');
-const units = config.get('weatherAPI.units');
 
 router.get('/current/:id', async( async (req, res) => {
  
-    const response = await (await fetch(`${ weatherAPI }/group?id=${ req.params.id }&appid=${ apiKey }&lang=${ req.query.lang || lang }&units=${ req.query.units || units }`)).json();
+    const response = await (await fetch(`${ weatherAPI }/group?id=${ req.params.id }&appid=${ apiKey }&lang=${ req.query.lang }&units=${ req.query.units }`)).json();
     const cities = [];
 
     for (const city of response.list) {
@@ -48,7 +46,7 @@ router.get('/current/:id', async( async (req, res) => {
 
 router.get('/5-days/:id', async( async (req, res) => {
 
-    const forecast = await (await fetch(`${ weatherAPI }/forecast?id=${ req.params.id }&appid=${ apiKey }&lang=${ req.query.lang || lang }&units=${ req.query.units || units }`)).json();
+    const forecast = await (await fetch(`${ weatherAPI }/forecast?id=${ req.params.id }&appid=${ apiKey }&lang=${ req.query.lang }&units=${ req.query.units }`)).json();
 
     let hourlyForecast = { 
         days: [],
