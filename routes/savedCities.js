@@ -8,7 +8,7 @@ router.post('/', async(async (req, res) => {
     if(!req.body.id) return res.status(400).send('no id sent');
     
     const user = await User.findById(req.user._id);
-    if(user.savedCities.includes(req.body.id)) return res.status(400).send('city already saved');
+    if(user.savedCities.includes(req.body.id)) return res.status(409).send('city already saved');
     if(user.savedCities.length === 20) return res.status(400).send('limit of 20 saved cities is reached');
 
     const city = await City.findOne({id: req.body.id});

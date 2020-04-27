@@ -49,7 +49,7 @@ router.post('/', async(async (req, res) => {
     if(error) return res.status(400).send(error.message);
 
     let user = await User.findOne({email: req.body.email});
-    if(user) return res.status(400).send('user already exists');
+    if(user) return res.status(409).send('user already exists');
 
     user = new User({
         name: req.body.name,
